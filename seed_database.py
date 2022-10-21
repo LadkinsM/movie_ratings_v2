@@ -32,9 +32,6 @@ with open('data/movies.json') as f:
 movies_in_db = []
 
 for movie in movie_data:
-    # TODO: get the title, overview, and poster_path from the movie
-    # dictionary. Then, get the release_date and convert it to a
-    # datetime object with datetime.strptime
 
     title, overview, poster_path = (movie['title'], movie['overview'], movie['poster_path'])
 
@@ -42,7 +39,6 @@ for movie in movie_data:
     format = "%Y-%m-%d"
     release_date = datetime.strptime(release_date_data, format)
 
-    # TODO: create a movie here and append it to movies_in_db
     movies_in_db.append(crud.create_movie(title, overview, release_date, poster_path))
 
 model.db.session.add_all(movies_in_db)
@@ -52,11 +48,9 @@ for n in range(10):
     email = f'user{n}@test.com'  # Voila! A unique email!
     password = 'test'
 
-    # TODO: create a user here
     user = crud.create_user(email, password)
     model.db.session.add(user)
 
-    # TODO: create 10 ratings for the user
     for i in range(10):
         rating = crud.create_rating(user, choice(movies_in_db), randint(1,5))
         model.db.session.add(rating)
