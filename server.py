@@ -63,7 +63,25 @@ def register_user():
         flash('Congratulations, your account has been created and you can now login!')
         
     return redirect('/')
+
+@app.route('/login', methods=['POST'])
+def check_user():
+    """Login existing user."""
+
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    user = crud.get_user_by_email(email)
+
+    if user.password == password:
+        session['user'] = user.user_id
+        flash('Logged In!')
+    else:
+        flash('Your password is incorrect.')
     
+    return redirect('/')
+
+
 
 @app.route('/users/<user_id>')
 def selected_user(user_id):
