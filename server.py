@@ -17,13 +17,15 @@ def homepage():
 
     return render_template('homepage.html')
 
-@app.route("/movies")
+# MOVIE-RELATED
+
+@app.route('/movies')
 def all_movies():
     """View all movies."""
 
     movies = crud.get_movies()
 
-    return render_template("all_movies.html", movies=movies)
+    return render_template('all_movies.html', movies=movies)
 
 @app.route('/movies/<movie_id>')
 def selected_movie(movie_id):
@@ -31,7 +33,25 @@ def selected_movie(movie_id):
     
     movie = crud.get_movie_by_id(movie_id)
 
-    return render_template("movie_details.html", movie=movie)
+    return render_template('movie_details.html', movie=movie)
+
+# USER-RELATED
+
+@app.route('/users')
+def all_users():
+    """""View all users."""
+    
+    users = crud.get_users()
+
+    return render_template('all_users.html', users=users)
+
+@app.route('/users/<user_id>')
+def selected_user(user_id):
+    """Displays user details"""
+
+    user = crud.get_user_by_id(user_id)
+
+    return render_template('user_details.html', user=user)
 
 if __name__ == "__main__":
     connect_to_db(app)
