@@ -4,10 +4,24 @@ from model import db, User, Movie, Rating, connect_to_db
 
 #FUNCTIONS
 
+#USER-RELATED
+
 def create_user(email, password):
     """Create and return a new user."""
 
     return User(email=email, password=password)
+
+def get_users():
+    """Returns all users"""
+
+    return User.query.all()
+    
+def get_user_by_id(user_id):
+    """Return user info by id"""
+
+    return User.query.get(user_id)
+
+#MOVIE-RELATED
 
 def create_movie(title, overview, release_date, poster_path):
     """Create and return a new movie."""
@@ -28,6 +42,8 @@ def get_movie_by_id(movie_id):
     """Return movie info by id"""
 
     return Movie.query.get(movie_id)
+
+#RATING-RELATED
 
 def create_rating(user, movie, score):
     """Create a rating"""
