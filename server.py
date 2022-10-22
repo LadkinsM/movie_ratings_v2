@@ -45,6 +45,26 @@ def all_users():
 
     return render_template('all_users.html', users=users)
 
+@app.route('/users', methods=['POST'])
+def register_user():
+    """"Create new user."""
+
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    user = crud.get_user_by_email(email)
+
+    if user:
+        flash('That email is already being used, please try again with a different email.')
+    else:
+        user = crud.create_user(email, password)
+        db.session.add(user)
+        db.session.commit()
+        flash('Congratulations, your account has been created and you can now login!')
+        
+    return redirect('/')
+    
+
 @app.route('/users/<user_id>')
 def selected_user(user_id):
     """Displays user details"""
