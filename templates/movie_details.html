@@ -9,5 +9,23 @@
   {{ movie.overview }}
 </p>
 
+    {% if 'user' in session %}
+
+      <form action='{{ movie.movie_id }}/rating' method="POST">
+        <h2>Leave a Rating</h2>
+
+        <label for="score">Please select your rating here:</label>
+
+        <select name="score">
+        {% for i in range(0,6) %}
+            <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+        </select>
+        <input type="submit">
+    </form>
+
+    {% endif %}
+
 <img src="{{ movie.poster_path }}">
-{% endblock %}
+
+{% endblock body %}

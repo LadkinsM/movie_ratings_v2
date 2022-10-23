@@ -73,15 +73,16 @@ def check_user():
 
     user = crud.get_user_by_email(email)
 
-    if user.password == password:
-        session['user'] = user.user_id
-        flash('Logged In!')
+    if user:
+        if user.password == password:
+            session['user'] = user.user_id
+            flash('Logged In!')
+        else:
+            flash('Your password is incorrect.')
     else:
-        flash('Your password is incorrect.')
+        flash('Your username is incorrect. Please input a valid username & password.')
     
     return redirect('/')
-
-
 
 @app.route('/users/<user_id>')
 def selected_user(user_id):
@@ -90,6 +91,25 @@ def selected_user(user_id):
     user = crud.get_user_by_id(user_id)
 
     return render_template('user_details.html', user=user)
+
+#RATINGS
+
+@app.route('/movies/<movie_id>/rating', methods= ['POST'])
+def add_rating(movie_id):
+    """Adds user rating"""
+
+    user_id = int(session['user'])
+    movie_id = int(movie_id)
+    score = request.form.get('score', type=int)
+
+    rating = crud.create_rating(user_id, movie_id, score)
+
+    db.session.add(rating)
+    db.session.commit()
+
+    return redirect('/')
+
+    
 
 if __name__ == "__main__":
     connect_to_db(app)
