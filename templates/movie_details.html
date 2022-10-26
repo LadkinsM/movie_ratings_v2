@@ -24,6 +24,31 @@
         <input type="submit">
     </form>
 
+    <div>
+      <h2>Your Rating</h2>
+      <p id="rating">
+
+      </p>
+    </div>
+
+    <script>
+      const button = document.querySelector('form');
+
+      button.addEventListener('submit', (evt) => {
+
+        evt.preventDefault();
+
+        const url = "/movies/{{ movie.movie_id }}/ratings";
+        
+        fetch(url)
+          .then((response) => response.json())
+          .then((ratingData) => {
+            document.querySelector('#rating').innerText = ratingData['score'];
+          });
+      });
+    
+    </script>
+
     {% endif %}
 
 <img src="{{ movie.poster_path }}">

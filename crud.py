@@ -55,6 +55,13 @@ def create_rating(user_id, movie_id, score):
 
     return Rating(user_id=user_id, movie_id=movie_id, score=score)
 
+def get_rating_by_movie_id(movie_id, user_id):
+    """Return users rating"""
+
+    return db.session.query(Rating.score).filter(Rating.movie_id==movie_id, Rating.user_id==user_id).first()
+
+    # return Rating.query.filter(Rating.movie_id==movie_id).all()
+
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)

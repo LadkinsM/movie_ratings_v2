@@ -1,7 +1,7 @@
 """Server for movie ratings app."""
 
 from flask import (Flask, render_template, request, flash, session,
-                   redirect)
+                   redirect, jsonify)
 from model import connect_to_db, db
 import crud
 from jinja2 import StrictUndefined
@@ -107,7 +107,21 @@ def add_rating(movie_id):
     db.session.add(rating)
     db.session.commit()
 
-    return redirect('/')
+    return render_template('movie_details.html', movie=crud.get_movie_by_id(movie_id))
+
+@app.route('/movies/<movie_id>/ratings')
+def return_rating(movie_id):
+    user_id = int(session['user'])
+    movie_id = int(movie_id)
+
+    rating = crud.get_rating_by_movie_id(movie_id, user_id)
+
+    if 'user' in session:
+        return jsonify({"user_id":rating.user_id,
+                        "score":rating.score})
+    
+    return jsonify({"score": "You must be logged in to view your rating."})
+    
 
     
 
